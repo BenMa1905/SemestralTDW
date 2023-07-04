@@ -18,6 +18,6 @@ class Bebida extends Model
     protected $fillable = [
         'nombre', 
         'sabor',
-        'presentaciones'
+        'presentacion'
     ];
 }

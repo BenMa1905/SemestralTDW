@@ -12,37 +12,63 @@ class BebidaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    
+
+    
+
+    public function create(Request $request)
+    {
+        $bebida = new Bebida();
+        $bebida->nombre = $request->nombre;
+        $bebida->sabor = $request->sabor;
+        $bebida->presentaciones = $request->presentacion;
+        $bebida->save();
+        
+        return response()->json($bebida,201);
+    }
+
+    
+    public function update(Request $request, $id)
+    {
+        $bebida = Bebida::findOrFail($id);        
+        
+        if($request->has('nombre')){
+            $bebida->nombre = $request->nombre;
+        }
+
+        if($request->has('sabor')){
+            $bebida->sabor = $request->sabor;
+        }
+
+        if($request->has('presentacion')){
+            $bebida->presentacion = $request->presentacion;
+        }
+
+        $bebida->save();
+        return response()->json($bebida,200);
+    }
+
+    public function destroy($id)
+    {
+        $bebida = Bebida::findOrFail($id);
+        $bebida->delete();
+        return response()->json([
+            'message' => 'Bebida eliminada correctamente'
+        ],204);
+    }
+
+    public function findOne($id)
+    {
+        $bebida = Bebida::findOrFail($id);
+        return response()->json($bebida,200);
+    }
+
+    public function findAll()
     {
         $bebidas = Bebida::all();
-        return view('bebidas.index', compact('bebidas'));
+        return response()->json($bebidas,200);
     }
 
-    public function create()
-    {
-        return view('bebidas.create');
-    }
 
-    public function store(Request $request)
-    {
-        Bebida::create($request->all());
-        return redirect()->route('bebidas.index');
-    }
 
-    public function edit(Bebida $bebida)
-    {
-        return view('bebidas.edit', compact('bebida'));
-    }
-
-    public function update(Request $request, Bebida $bebida)
-    {
-        $bebida->update($request->all());
-        return redirect()->route('bebidas.index');
-    }
-
-    public function destroy(Bebida $bebida)
-    {
-        $bebida->delete();
-        return redirect()->route('bebidas.index');
-    }
 }
