@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BebidaController;
+use App\Http\Controllers\BodegaController;
+use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\InventarioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,11 +16,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-use App\Http\Controllers\BebidaController;
-
-Route::resource('bebidas', BebidaController::class);
-
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('bebidas', BebidaController::class);
+Route::resource('bodega', BodegaController::class);
+Route::resource('registros', RegistroController::class);
+Route::resource('inventarios', InventarioController::class);
