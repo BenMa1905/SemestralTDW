@@ -6,6 +6,7 @@ use App\Http\Controllers\BebidaController;
 use App\Http\Controllers\BodegaController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\FunctionController;
 
 Route::middleware('api')->group(function () {
     Route::get('bebidas', [BebidaController::class, 'findAll']);
@@ -32,6 +33,16 @@ Route::middleware('api')->group(function () {
     Route::get('inventarios/{id}', [InventarioController::class, 'show']);
     Route::put('inventarios/{id}', [InventarioController::class, 'update']);
     Route::delete('inventarios/{id}', [InventarioController::class, 'destroy']);
+
+    Route::get('function/total-inventario/{id}', [FunctionController::class, 'obtenerTotalInventario']);
+    Route::get('function/total-inventario-producto/{id}', [FunctionController::class, 'obtenerTotalInventarioProducto']);
+    Route::get('function/bebidas-almacen/{id}', [FunctionController::class, 'obtenerBebidasEnAlmacen']);
+    Route::get('function/informacion-almacenes', [FunctionController::class, 'informacionAlmacenes']);
+    Route::get('function/almacenes-por-bebida/{id}', [FunctionController::class, 'obtenerAlmacenesPorBebida']);
+    Route::get('function/historial-por-bodega/{id}', [FunctionController::class, 'obtenerHistorialPorBodega']);
+    Route::get('function/historial-entre-almacenes/{idBodegaEnvia}/{idBodegaRecibe}', [FunctionController::class, 'obtenerHistorialEntreAlmacenes']);
+
+
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
