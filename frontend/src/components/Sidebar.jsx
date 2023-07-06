@@ -1,4 +1,3 @@
-'use client';
 
 import { Sidebar } from 'flowbite-react';
 import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards } from 'react-icons/hi';
@@ -7,7 +6,7 @@ import {LuGlassWater} from 'react-icons/lu';
 import {PiGarageBold} from 'react-icons/pi';
 import {BiTransferAlt} from 'react-icons/bi';
 
-export default function LogoBranding() {
+export default function SidebarLogo() {
   return (
     <Sidebar aria-label="Sidebar with logo branding example">
       <div
@@ -15,51 +14,44 @@ export default function LogoBranding() {
         className='flex flex-row items-center  '
       >
         <SiPhpmyadmin className='h-16 w-16 text-slate-800' />
-        <p className='text-slate-800 text-xl font-semibold'>
+        <div className='text-slate-800 text-xl font-semibold'>
           Administacion
-        </p>
+        </div>
       </div>
+      
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           <Sidebar.Item
-            href="#"
+            href="/"
             icon={HiChartPie}
           >
-            <p>
+            <div>
               Dashboard
-            </p>
+            </div>
           </Sidebar.Item>
           <Sidebar.Item
-            href="#"
+            href="bodegas"
             icon={PiGarageBold}
           >
-            <p>
+            <div>
               Bodegas
-            </p>
-          </Sidebar.Item>
-          <Sidebar.Item
-            href="#"
-            icon={BiTransferAlt}
-          >
-            <p>
-                Transferencias
-            </p>
-          </Sidebar.Item>
-          <Sidebar.Item
-            href="#"
-            icon={HiUser}
-          >
-            <p>
-              Users
-            </p>
+            </div>
           </Sidebar.Item>
           <Sidebar.Item
             href="#"
             icon={LuGlassWater}
           >
-            <p>
+            <div>
               Bebidas
-            </p>
+            </div>
+          </Sidebar.Item>
+          <Sidebar.Item
+            href="#"
+            icon={BiTransferAlt}
+          >
+            <div>
+                Transferencias
+            </div>
           </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
