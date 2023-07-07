@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import { Timeline } from 'flowbite-react';
 import { HiCalendar } from 'react-icons/hi';

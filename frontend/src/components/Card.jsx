@@ -83,6 +83,21 @@ function TablesCard() {
   );
 }
 
+function DrinkCard(){
+    return(
+        <Card className="w-full h-3/4" href="#">
+        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <div>Bebidas</div>
+        </h5>
+        <div className="font-normal text-gray-700 dark:text-gray-400">
+
+            <div>Aqui se muestran las bebidas</div>
+        </div>
+        <DrinkTable />
+        </Card>
+    )
+}
+
 function WarehouseCard(){
     return(
         <Card className="min-w-1/3 h-3/4" href="#">
@@ -104,4 +119,5 @@ module.exports = {
   TitleCard,
   TablesCard,
   WarehouseCard,
+  DrinkCard,
 };

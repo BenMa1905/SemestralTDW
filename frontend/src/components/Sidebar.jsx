@@ -38,7 +38,7 @@ export default function SidebarLogo() {
             </div>
           </Sidebar.Item>
           <Sidebar.Item
-            href="#"
+            href="bebidas"
             icon={LuGlassWater}
           >
             <div>
