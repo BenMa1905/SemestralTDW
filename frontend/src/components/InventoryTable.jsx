@@ -2,7 +2,7 @@
 
 import { Table } from "flowbite-react";
 
-export default function InventoryTable({ warehouseId }) {
+function InventoryTable({ warehouseId }) {
   const dummyInventory = [
     {
       id: 1,
@@ -87,3 +87,38 @@ export default function InventoryTable({ warehouseId }) {
     </Table>
   );
 }
+
+function InventoryTable2({ inventory }) {
+  if (!inventory ) return <div>loading...</div>;
+
+  const rowGenerator = () => {
+    // todo: replace with real data
+    // const data = fetch(`http://localhost:3000/api/v1/inventory/${warehouseId}`);
+
+    return inventory.map((bebida) => {
+      return (
+        <Table.Row key={bebida.id}>
+          <Table.Cell>{bebida.name}</Table.Cell>
+          <Table.Cell>{bebida.flavor}</Table.Cell>
+          <Table.Cell>{bebida.totalProducts}</Table.Cell>
+        </Table.Row>
+      );
+    });
+  };
+
+  return (
+    <Table striped>
+      <Table.Head>
+        <Table.HeadCell>Nombre</Table.HeadCell>
+        <Table.HeadCell>Sabor</Table.HeadCell>
+        <Table.HeadCell>Cantidad</Table.HeadCell>
+      </Table.Head>
+      <Table.Body className="divide-y">{rowGenerator()}</Table.Body>
+    </Table>
+  );
+}
+
+module.exports = {
+  InventoryTable,
+  InventoryTable2,
+};

@@ -46,7 +46,7 @@ export default function SidebarLogo() {
             </div>
           </Sidebar.Item>
           <Sidebar.Item
-            href="#"
+            href="transferencias"
             icon={BiTransferAlt}
           >
             <div>

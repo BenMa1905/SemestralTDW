@@ -5,8 +5,7 @@ import { HiChartPie } from "react-icons/hi";
 import { WarehouseCard } from "@/components/Card";
 import { Timeline, Card, Label, TextInput } from "flowbite-react";
 import InventoryTable from "@/components/InventoryTable";
-import {InForm,CreateWarehouse} from "@/components/Forms";
-
+import { InForm, CreateWarehouse, DeleteWarehouse,EditWarehouse } from "@/components/Forms";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -65,8 +64,6 @@ export default function Home() {
     ],
   });
 
-  
-
   useEffect(() => {
     // fetchWarehouse();
     // fetchProducts();
@@ -82,9 +79,9 @@ export default function Home() {
 
   const handleSelect = (e) => {
     console.log(e.target.value);
-    console.log("Selected antes",selected);
+    console.log("Selected antes", selected);
     setSelected(e.target.value);
-    console.log("Selected",selected);
+    console.log("Selected", selected);
   };
 
   return (
@@ -101,9 +98,12 @@ export default function Home() {
         <div className="bg-slate-800 w-full justify-evenly   m-2 p-2  gap-2 flex flex-col">
           <div className="flex h-1/2 gap-2 overflow-scroll justify-evenly items-center">
             <WarehouseCard />
-            <CreateWarehouse />
+            <div className=" flex  w-1/2 gap-2 ">
+              <CreateWarehouse />
+              <DeleteWarehouse warehouses={warehouses} />
+            </div>
           </div>
-          <div className="flex h-1/2 gap-2 justify-evenly  items-center">
+          <div className="flex h-1/2  gap-2 justify-evenly  items-center">
             <Card className="overflow-scroll" href="#">
               <div className="">
                 <div>
@@ -127,7 +127,12 @@ export default function Home() {
                 <InventoryTable warehouseId={selected} />
               </div>
             </Card>
-            <InForm products={products} warehouses={warehouses}/>
+            <div className="flex w-1/2 gap-2">
+            <InForm products={products} warehouses={warehouses} />
+            <EditWarehouse warehouses={warehouses} />
+            </div>
+            
+
           </div>
         </div>
       </div>

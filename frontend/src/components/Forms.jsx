@@ -142,9 +142,168 @@ function CreateWarehouse() {
   );
 }
 
+function DeleteWarehouse({ warehouses }) {
+
+  const dummyWarehouse = [
+    {
+      id: 1,
+      name: "Bodega 1",
+      address: "Calle 1",
+    },
+    {
+      id: 2,
+      name: "Bodega 2",
+      address: "Calle 2",
+    },
+    {
+      id: 3,
+      name: "Bodega 3",
+      address: "Calle 3",
+    },
+  ]
+
+  const [warehouse, setWarehouse] = useState(dummyWarehouse[0].id);
+
+  const warehouseOptions = warehouses.map((warehouse) => (
+    <option value={warehouse.id}>{warehouse.name}</option>
+  ));
+
+  const handleSelect = (e) => {
+    setWarehouse(e.target.value);
+  };
+  
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(name);
+  };
+
+
+
+  return (
+    <Card className="overflow-scroll w-1/2" href="#">
+      <div className="">
+        <div>
+          <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <div>Eliminar bodega</div>
+          </h5>
+        </div>
+      </div>
+      <form className="flex flex-col gap-2">
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="base" value="Bodega" />
+          </div>
+          <select
+            onChange={handleSelect}
+            id="products"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option selected>Escoje una bodega</option>
+            {warehouseOptions}
+          </select>
+        </div>
+        <Button type="submit">Enviar</Button>
+      </form>
+    </Card>
+  );
+}
+
+function EditWarehouse({ warehouses }) {
+
+  const dummyWarehouse = [
+    {
+      id: 1,
+      name: "Bodega 1",
+      address: "Calle 1",
+    },
+    {
+      id: 2,
+      name: "Bodega 2",
+      address: "Calle 2",
+    },
+  ]
+
+  const [warehouse, setWarehouse] = useState(dummyWarehouse[0].id);
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+
+  const warehouseOptions = warehouses.map((warehouse) => (
+    <option value={warehouse.id}>{warehouse.name}</option>
+  ));
+
+  const handleSelect = (e) => {
+    setWarehouse(e.target.value);
+  };
+
+  const handleName = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleAddress = (e) => {
+    setAddress(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(name);
+  };
+
+  return (
+    <Card className="overflow-scroll w-1/2" href="#">
+      <div className="">
+        <div>
+          <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <div>Editar bodega</div>
+          </h5>
+        </div>
+      </div>
+      <form className="flex flex-col gap-2">
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="base" value="Bodega" />
+          </div>
+          <select
+            onChange={handleSelect}
+            id="products"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option selected>Escoje una bodega</option>
+            {warehouseOptions}
+          </select>
+        </div>
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="base" value="Nombre" />
+          </div>
+          <TextInput
+            id="base"
+            type="text"
+            placeholder="Nombre"
+            onChange={handleName}
+            value={name}
+          />
+          <div className="mb-2 block">
+            <Label htmlFor="base" value="Dirección" />
+          </div>
+          <TextInput
+            id="base"
+            type="text"
+            placeholder="Dirección"
+            onChange={handleAddress}
+            value={address}
+          />
+        </div>
+        <Button type="submit">Enviar</Button>
+      </form>
+    </Card>
+  );
+}
+
 function CreateDrink() {
   const [name, setName] = useState("");
   const [flavor, setflavor] = useState("");
+  const [size, setSize] = useState("");
 
   const handleName = (e) => {
     setName(e.target.value);
@@ -158,6 +317,22 @@ function CreateDrink() {
     e.preventDefault();
     console.log(name);
   };
+
+  const handleSelect = (e) => {
+    setSize(e.target.value);
+  };
+
+  const sizes = [
+    "1.5L" ,
+    "1L",
+    "750ml",
+    "500ml",
+    "250ml"
+  ];
+
+  const sizeOptions = sizes.map((size) => (
+    <option value={size}>{size}</option>
+  ));
 
   return (
     <Card className="overflow-scroll w-1/3 h-fit" href="#">
@@ -181,7 +356,7 @@ function CreateDrink() {
             value={name}
           />
           <div className="mb-2 block">
-            <Label htmlFor="base" value="Direccion" />
+            <Label htmlFor="base" value="Sabor" />
           </div>
           <TextInput
             id="base"
@@ -190,6 +365,18 @@ function CreateDrink() {
             onChange={handleflavor}
             value={flavor}
           />
+          <div>
+            <Label htmlFor="base" value="Tamaño" />
+          </div>
+          <select
+            onChange={handleSelect}
+            id="products"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option selected>Escoje un tamaño</option>
+            {sizeOptions}
+          </select>
+
         </div>
         <Button type="submit">Enviar</Button>
       </form>
@@ -384,6 +571,8 @@ function EditDrink() {
 module.exports = {
   InForm,
   CreateWarehouse,
+  DeleteWarehouse,
+  EditWarehouse,
   CreateDrink,
   DeleteDrink,
   EditDrink,

@@ -5,6 +5,8 @@ import DefaultCarousel from "./Carousel";
 import StepperTimeline from "./Timeline";
 import WarehouseTable from "./WarehouseTable";
 import DrinkTable from "./DrinkTable";
+import { useState,useEffect } from "react";
+import {InventoryTable} from "./InventoryTable";
 
 function DefaultCard() {
   return (
@@ -111,6 +113,9 @@ function WarehouseCard(){
         </Card>
     )
 }
+
+
+       
 
 module.exports = {
   DefaultCard,
