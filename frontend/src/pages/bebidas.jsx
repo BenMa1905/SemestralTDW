@@ -63,6 +63,35 @@ export default function Home() {
     setActiveTab(tabIndex);
   };
 
+  const [products, setProducts] = useState([
+    {
+      id: 1,
+      nombre: "Coca Cola",
+      presentacion: "1.5L",
+      sabor: "Cola",
+    },
+    {
+      id: 2,
+      nombre: "Coca Cola",
+      presentacion: "1.5L",
+      sabor: "Cola",
+    },
+  ]);
+
+  useEffect(() => {
+    fetchProducts().then((data) => {
+      setProducts(data);
+    });
+  }, []);
+
+  const fetchProducts = async () => {
+    const response = await fetch("http://127.0.0.1:8000/api/bebidas");
+    const data = await response.json();
+    console.log("Bebidas ", data);
+    return data;
+  };
+
+
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between ${inter.className}`}
@@ -174,7 +203,7 @@ export default function Home() {
                 <div className="flex justify-evenly  h-full w-full">
                   <CarouselCard />
                   <div className="flex w-1/2 ">
-                    <DrinkCard className="flex w-full" />
+                    <DrinkCard bebidas={products} className="flex w-full" />
                   </div>
                 </div>
               </div>
@@ -189,7 +218,7 @@ export default function Home() {
                 <div className="flex justify-evenly   h-full w-full">
                   <CreateDrink />
                   <div className="flex w-1/2 ">
-                    <DrinkCard className="flex w-full" />
+                    <DrinkCard bebidas={products} className="flex w-full" />
                   </div>
                 </div>
               </div>
@@ -202,9 +231,9 @@ export default function Home() {
                 hidden=""
               >
                 <div className="flex justify-evenly   h-full w-full">
-                  <DeleteDrink />
+                  <DeleteDrink  drinks={products}/>
                   <div className="flex w-1/2 ">
-                    <DrinkCard className="flex w-full" />
+                    <DrinkCard bebidas={products} className="flex w-full" />
                   </div>
                 </div>
               </div>
@@ -217,9 +246,9 @@ export default function Home() {
                 hidden=""
               >
                 <div className="flex justify-evenly   h-full w-full">
-                  <EditDrink />
+                  <EditDrink drinks={products} />
                   <div className="flex w-1/2 ">
-                    <DrinkCard className="flex w-full" />
+                    <DrinkCard bebidas={products} className="flex w-full" />
                   </div>
                 </div>
               </div>

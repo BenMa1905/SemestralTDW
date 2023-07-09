@@ -8,7 +8,7 @@ import {
   TablesCard,
 } from "@/components/Card";
 import { useState, useEffect } from "react";
-import { Button, Card,Alert } from "flowbite-react";
+import { Button, Card, Alert } from "flowbite-react";
 import { InventoryTable2 } from "@/components/InventoryTable";
 import { data } from "autoprefixer";
 
@@ -30,15 +30,15 @@ export default function Home() {
     },
   ]);
 
-  const fetchWarehouse = async () => {
-    // const res = await fetch("http://localhost:3000/api/warehouse");
-    // const data = await res.json();
-    // console.log(data);
-    // setSetWarehouses(data);
+  const fetchWarehouses = async () => {
+    const res = await fetch("http://127.0.0.1:8000/api/bodega");
+    const data = await res.json();
+    console.log(data);
+    setWarehouses(data);
   };
 
   useEffect(() => {
-    // fetchWarehouse();
+    fetchWarehouses();
   }, []);
 
   // ! Define as null to avoid errors
@@ -96,22 +96,28 @@ export default function Home() {
   };
 
   const fetchFirstInventory = async () => {
-    // const res = await fetch("http://localhost:3000/api/inventory/{firstWarehouse.id}");
-    // const data = await res.json();
-    // console.log(data);
-    // setFirstInventory(data);
+    // TODO: Fetch inventory from first warehouse
+    const res = await fetch(
+      `http://127.0.0.1:8000/api/function/bebidas-almacen/${firstWarehouse.id}`
+    );
+    const data = await res.json();
+    console.log("firstInventory",data);
+    setFirstInventory(data);
   };
 
   const fetchSecondInventory = async () => {
-    // const res = await fetch("http://localhost:3000/api/inventory/{secondWarehouse.id}");
-    // const data = await res.json();
-    // console.log(data);
-    // setSecondInventory(data);
+    // TODO: Fetch inventory from second warehouse
+    const res = await fetch(
+      `http://127.0.0.1:8000/api/function/bebidas-almacen/${secondWarehouse.id}`
+    );
+    const data = await res.json();
+    console.log("secondInventory",data);
+    setSecondInventory(data);
   };
 
   useEffect(() => {
-    // fetchFirstInventory();
-    // fetchSecondInventory();
+    fetchFirstInventory();
+    fetchSecondInventory();
   }, [firstWarehouse, secondWarehouse]);
 
   const [products, setProducts] = useState([
@@ -130,80 +136,85 @@ export default function Home() {
   ]);
 
   const fetchProducts = async () => {
-    // const res = await fetch("http://localhost:3000/api/product/{product.id}");
-    // const data = await res.json();
-    // console.log(data);
-    // setProducts(data);
+    const res = await fetch("http://127.0.0.1:8000/api/bebidas");
+    const data = await res.json();
+    console.log(data);
+    setProducts(data);
   };
 
   useEffect(() => {
-    // fetchProduct();
+    fetchProducts();
   }, []);
 
-  const [firstWarehouseTransfer, setFirstWarehouseTransfer] = useState(firstInventory ||null);
-    const [secondWarehouseTransfer, setSecondWarehouseTransfer] = useState(secondInventory|| null);
-    const [productTransfer, setProductTransfer] = useState(null);
-    const [quantityTransfer, setQuantityTransfer] = useState(0);
+  const [firstWarehouseTransfer, setFirstWarehouseTransfer] = useState(
+    firstInventory || null
+  );
+  const [secondWarehouseTransfer, setSecondWarehouseTransfer] = useState(
+    secondInventory || null
+  );
+  const [productTransfer, setProductTransfer] = useState(null);
+  const [quantityTransfer, setQuantityTransfer] = useState(0);
 
-    const handleSelectFirstWarehouseTransfer = (firstWarehouseTransfer) => {
-        const warehouse = warehouses.find(
-            (warehouse) => warehouse.id === parseInt(firstWarehouseTransfer)
-        );
-        setFirstWarehouseTransfer(warehouse);
-    };
+  const handleSelectFirstWarehouseTransfer = (firstWarehouseTransfer) => {
+    const warehouse = warehouses.find(
+      (warehouse) => warehouse.id === parseInt(firstWarehouseTransfer)
+    );
+    setFirstWarehouseTransfer(warehouse);
+  };
 
-    const handleSelectSecondWarehouseTransfer = (secondWarehouseTransfer) => {
-        const warehouse = warehouses.find(
-            (warehouse) => warehouse.id === parseInt(secondWarehouseTransfer)
-        );
-        setSecondWarehouseTransfer(warehouse);
-    };
+  const handleSelectSecondWarehouseTransfer = (secondWarehouseTransfer) => {
+    const warehouse = warehouses.find(
+      (warehouse) => warehouse.id === parseInt(secondWarehouseTransfer)
+    );
+    setSecondWarehouseTransfer(warehouse);
+  };
 
-    const handleSelectProductTransfer = (productTransfer) => {
-        const product = products.find(
-            (product) => product.id === parseInt(productTransfer)
-        );
-        setProductTransfer(product);
-    };
+  const handleSelectProductTransfer = (productTransfer) => {
+    const product = products.find(
+      (product) => product.id === parseInt(productTransfer)
+    );
+    setProductTransfer(product);
+  };
 
-    const handleQuantityTransfer = (quantityTransfer) => {
-        setQuantityTransfer(quantityTransfer);
-    };
+  const handleQuantityTransfer = (quantityTransfer) => {
+    setQuantityTransfer(quantityTransfer);
+  };
 
   const handleTransfer = async (e) => {
     e.preventDefault();
-    if(firstWarehouseTransfer===secondWarehouseTransfer){
-        alert("No se puede transferir a la misma bodega")
-        return (
-            <Alert color="failure" className="w-1/2">
-                <p className="font-bold">Error</p>
-                <p className="text-sm">No se puede transferir a la misma bodega</p>
-            </Alert>
-        )
+    if (firstWarehouseTransfer === secondWarehouseTransfer) {
+      alert("No se puede transferir a la misma bodega");
+      return (
+        <Alert color="failure" className="w-1/2">
+          <p className="font-bold">Error</p>
+          <p className="text-sm">No se puede transferir a la misma bodega</p>
+        </Alert>
+      );
     }
-    // const res = await fetch("http://localhost:3000/api/transfer", {
-    //     method: "POST",
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //         firstWarehouse,
-    //         secondWarehouse,
-    //     }),
-    // });
-    // const data = await res.json();
-    // console.log(data);
+    const response = await fetch("http://127.0.0.1:8000/api/registros", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        bodega_envia_id: firstWarehouseTransfer.id,
+        bodega_recibe_id: secondWarehouseTransfer.id,
+        cantidad: quantityTransfer,
+        bebida_id: productTransfer.id,
+      }),
+    });
 
-    // if(data.status === 200){
-    //     alert("Transferencia exitosa")
-    //     return (
-    //         <Alert color="success" className="w-1/2">
-    //             <p className="font-bold">Transferencia exitosa</p>
-    //             <p className="text-sm">Se ha transferido {quantityTransfer} {productTransfer.name} de {firstWarehouseTransfer.name} a {secondWarehouseTransfer.name}</p>
-    //         </Alert>
-    //     )
-    // }
+    console.log("response", response);
+    // console.log("transferencia",data);
+    if (response.status === 201) {
+      alert("Transferencia exitosa");
+    } else {
+      alert("Error en la transferencia");
+    }
+
+
   };
+
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between ${inter.className}`}
@@ -239,7 +250,7 @@ export default function Home() {
                         value={warehouse.id}
                         onClick={() => handleSelectFirstWarehouse(warehouse.id)}
                       >
-                        {warehouse.name}
+                        {warehouse.nombre}
                       </option>
                     ))}
                   </select>
@@ -265,7 +276,7 @@ export default function Home() {
                           handleSelectSecondWarehouse(warehouse.id)
                         }
                       >
-                        {warehouse.name}
+                        {warehouse.nombre}
                       </option>
                     ))}
                   </select>
@@ -277,52 +288,78 @@ export default function Home() {
             </div>
           </div>
           <div className="flex w-1/3 h-full justify-center items-center">
-              <Card className="w-full  flex " href="#">
-                <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  <div>Transferir</div>
-                </h5>
-                <form onSubmit={(e)=>handleTransfer(e)} className="flex flex-col gap-2 ">
+            <Card className="w-full  flex " href="#">
+              <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                <div>Transferir</div>
+              </h5>
+              <form
+                onSubmit={(e) => handleTransfer(e)}
+                className="flex flex-col gap-2 "
+              >
+                <div className="mb-2 block">
+                  <label htmlFor="base" className="text-slate-800">
+                    Producto:
+                  </label>
+
+                  <select
+                    required
+                    id="products"
+                    class="bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option selected>Escoje un producto</option>
+                    {products.map((product) => (
+                      <option
+                        key={product.id}
+                        value={product.id}
+                        onClick={() => handleSelectProductTransfer(product.id)}
+                      >
+                        {product.nombre} - {product.presentacion}
+                      </option>
+                    ))}
+                  </select>
+
                   <div className="mb-2 block">
                     <label htmlFor="base" className="text-slate-800">
-                      Producto:
+                      Cantidad:
                     </label>
-
-                    <select
-                        required
-                      id="products"
-                      class="bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                      <option selected>Escoje un producto</option>
-                      {products.map((product) => (
-                        <option
-                          key={product.id}
-                          value={product.id}
-                          onClick={() => handleSelectProductTransfer(product.id)}
-                        >
-                          {product.name}
-                        </option>
-                      ))}
-                    </select>
+                    <input
+                      required
+                      value={quantityTransfer}
+                      onChange={(e) => handleQuantityTransfer(e.target.value)}
+                      type="number"
+                      id="quantity"
+                      name="quantity"
+                      min="1"
+                      max="100"
+                      className="bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
 
                     <div className="mb-2 block">
                       <label htmlFor="base" className="text-slate-800">
-                        Cantidad:
+                        Desde Almacen:
                       </label>
-                      <input
-                        required
-                        value={quantityTransfer}
-                        onChange={(e) => setQuantityTransfer(e.target.value)}
-                        type="number"
-                        id="quantity"
-                        name="quantity"
-                        min="1"
-                        max="100"
-                        className="bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      />
+
+                      <select
+                        id="products"
+                        class="bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      >
+                        <option selected>Escoje un almacen</option>
+                        {warehouses.map((warehouse) => (
+                          <option
+                            key={warehouse.id}
+                            value={warehouse.id}
+                            onClick={() =>
+                              handleSelectFirstWarehouseTransfer(warehouse.id)
+                            }
+                          >
+                            {warehouse.nombre}
+                          </option>
+                        ))}
+                      </select>
 
                       <div className="mb-2 block">
                         <label htmlFor="base" className="text-slate-800">
-                          Desde Almacen:
+                          Hacia Almacen:
                         </label>
 
                         <select
@@ -334,51 +371,32 @@ export default function Home() {
                             <option
                               key={warehouse.id}
                               value={warehouse.id}
-                              onClick={() => handleSelectFirstWarehouseTransfer(warehouse.id)}
+                              onClick={() =>
+                                handleSelectSecondWarehouseTransfer(
+                                  warehouse.id
+                                )
+                              }
                             >
-                              {warehouse.name}
+                              {warehouse.nombre}
                             </option>
                           ))}
                         </select>
 
-                        <div className="mb-2 block">
-                          <label htmlFor="base" className="text-slate-800">
-                            Hacia Almacen:
-                          </label>
-
-                          <select
-                            id="products"
-                            class="bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        <div className="flex justify-center">
+                          <button
+                            type="submit"
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                           >
-                            <option selected>Escoje un almacen</option>
-                            {warehouses.map((warehouse) => (
-                              <option
-                                key={warehouse.id}
-                                value={warehouse.id}
-                                onClick={() =>
-                                    handleSelectSecondWarehouseTransfer(warehouse.id)
-                                }
-                              >
-                                {warehouse.name}
-                              </option>
-                            ))}
-                          </select>
-
-                          <div className="flex justify-center">
-                            <button
-                              type="submit"
-                              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            >
-                              Transferir
-                            </button>
-                          </div>
+                            Transferir
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
-                </form>
-              </Card>
-            </div>
+                </div>
+              </form>
+            </Card>
+          </div>
         </div>
       </div>
     </main>

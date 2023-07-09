@@ -4,8 +4,13 @@ import SidebarLogo from "@/components/Sidebar";
 import { HiChartPie } from "react-icons/hi";
 import { WarehouseCard } from "@/components/Card";
 import { Timeline, Card, Label, TextInput } from "flowbite-react";
-import {InventoryTable} from "@/components/InventoryTable";
-import { InForm, CreateWarehouse, DeleteWarehouse,EditWarehouse } from "@/components/Forms";
+import { InventoryTable2 } from "@/components/InventoryTable";
+import {
+  InForm,
+  CreateWarehouse,
+  DeleteWarehouse,
+  EditWarehouse,
+} from "@/components/Forms";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -34,44 +39,50 @@ export default function Home() {
   ]);
 
   const fetchWarehouse = async () => {
-    const res = await fetch("http://localhost:3000/api/warehouse");
+    const res = await fetch("http://127.0.0.1:8000/api/bodega");
     const data = await res.json();
     console.log(data);
-    setSetWarehouses(data);
+    setWarehouses(data);
   };
 
-  const [products, setProducts] = useState({
-    id: 1,
-    bebidas: [
-      {
-        id: 1,
-        name: "Coca Cola",
-        flavor: "Cola",
-        totalProducts: 10,
-      },
-      {
-        id: 2,
-        name: "A mi me gusta la Pepsi",
-        flavor: "Cola",
-        totalProducts: 10,
-      },
-      {
-        id: 3,
-        name: "Fanta",
-        flavor: "Cola",
-        totalProducts: 10,
-      },
-    ],
-  });
+  const [products, setProducts] = useState([
+    {
+      id: 1,
+      name: "Coca Cola",
+      flavor: "Cola",
+      totalProducts: 10,
+    },
+    {
+      id: 2,
+      name: "A mi me gusta la Pepsi",
+      flavor: "Cola",
+      totalProducts: 10,
+    },
+    {
+      id: 3,
+      name: "Fanta",
+      flavor: "Cola",
+      totalProducts: 10,
+    },
+  ]);
+
+
+
+  const fetchProducts = async () => {
+    const res = await fetch("http://127.0.0.1:8000/api/bebidas");
+    const data = await res.json();
+    console.log(data);
+    setProducts(data);
+  };
 
   useEffect(() => {
-    // fetchWarehouse();
-    // fetchProducts();
+    fetchWarehouse();
+    fetchProducts();
   }, []);
 
   const listWarehouses = () => {
     return warehouses.map((warehouse) => (
-      <option value={warehouse.id}>{warehouse.name}</option>
+      <option value={warehouse.id}>{warehouse.nombre}</option>
     ));
   };
 
@@ -83,6 +94,34 @@ export default function Home() {
     setSelected(e.target.value);
     console.log("Selected", selected);
   };
+
+  const [inventory, setInventory] = useState([
+    {
+      id: 1,
+      nombre: "Coca Cola",
+      sabor: "Cola",
+      totalProductos: 10,
+    },
+    {
+      id: 2,
+      nombre: "A mi me gusta la Pepsi",
+      sabor: "Cola",
+      totalProductos: 10,
+    },
+  ]);
+
+  const fetchInventory = async () => {
+    const res = await fetch(
+      `http://127.0.0.1:8000/api/function/bebidas-almacen/${selected}`
+    );
+    const data = await res.json();
+    console.log(`productos de ${selected}`, data);
+    setInventory(data);
+  };
+
+  useEffect(() => {
+    fetchInventory();
+  }, [selected]);
 
   return (
     <main
@@ -97,7 +136,7 @@ export default function Home() {
         {/* div del content */}
         <div className="bg-slate-800 w-full justify-evenly   m-2 p-2  gap-2 flex flex-col">
           <div className="flex h-1/2 gap-2 overflow-scroll justify-evenly items-center">
-            <WarehouseCard />
+            <WarehouseCard warehouses={warehouses} />
             <div className=" flex  w-1/2 gap-2 ">
               <CreateWarehouse />
               <DeleteWarehouse warehouses={warehouses} />
@@ -116,7 +155,7 @@ export default function Home() {
                   <select
                     onChange={handleSelect}
                     id="countries"
-                    class="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   >
                     <option selected>Selecciona un almacen</option>
                     {listWarehouses()}
@@ -124,15 +163,13 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex flex-row w-full   justify-end">
-                <InventoryTable warehouseId={selected} />
+                <InventoryTable2 inventory={inventory} />
               </div>
             </Card>
             <div className="flex w-1/2 gap-2">
-            <InForm products={products} warehouses={warehouses} />
-            <EditWarehouse warehouses={warehouses} />
+              <InForm products={products} warehouses={warehouses} />
+              <EditWarehouse warehouses={warehouses} />
             </div>
-            
-
           </div>
         </div>
       </div>

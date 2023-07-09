@@ -32,7 +32,7 @@ function WarehouseTable({ data}) {
     
     if(data && data.length > 0 && data != undefined && data != null){
       return data.map((bodega) => (
-        <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+        <Table.Row key={bodega.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
           <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
             {bodega.nombre}
           </Table.Cell>
@@ -45,7 +45,7 @@ function WarehouseTable({ data}) {
     
 
     return dummyData.map((bodega) => (
-      <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+      <Table.Row key={bodega.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
           {bodega.name}
         </Table.Cell>

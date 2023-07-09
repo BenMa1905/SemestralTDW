@@ -89,28 +89,34 @@ function InventoryTable({ warehouseId }) {
 }
 
 function InventoryTable2({ inventory }) {
-  if (!inventory ) return <div>loading...</div>;
 
-  const rowGenerator = () => {
-    // todo: replace with real data
-    // const data = fetch(`http://localhost:3000/api/v1/inventory/${warehouseId}`);
+    const rowGenerator = () => {
 
-    return inventory.map((bebida) => {
-      return (
-        <Table.Row key={bebida.id}>
-          <Table.Cell>{bebida.name}</Table.Cell>
-          <Table.Cell>{bebida.flavor}</Table.Cell>
-          <Table.Cell>{bebida.totalProducts}</Table.Cell>
-        </Table.Row>
-      );
-    });
-  };
+      if(inventory){
+        console.log("Inventory", inventory)
+        return inventory.map((bebida) => {
+          return (
+            <Table.Row key={bebida.id}>
+              <Table.Cell>{bebida.nombre}</Table.Cell>
+              <Table.Cell>{bebida.sabor}</Table.Cell>
+              <Table.Cell>{bebida.presentacion}</Table.Cell>
+              <Table.Cell>{bebida.cantidad}</Table.Cell>
+            </Table.Row>
+          );
+        });
+      }
+
+
+  
+      return null;
+    };
 
   return (
     <Table striped>
       <Table.Head>
         <Table.HeadCell>Nombre</Table.HeadCell>
         <Table.HeadCell>Sabor</Table.HeadCell>
+        <Table.HeadCell>Presentacion</Table.HeadCell>
         <Table.HeadCell>Cantidad</Table.HeadCell>
       </Table.Head>
       <Table.Body className="divide-y">{rowGenerator()}</Table.Body>

@@ -35,7 +35,7 @@ export default function DrinkTable({data}) {
 
 
       return data.map((bebida) => (
-        <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+        <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={bebida.id}>
           <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
             {bebida.nombre}
           </Table.Cell>
@@ -45,15 +45,12 @@ export default function DrinkTable({data}) {
           <Table.Cell>
             {bebida.presentacion}
           </Table.Cell>
-          <Table.Cell>
-            {bebida.totalProducts}
-          </Table.Cell>
         </Table.Row>
       ));
     }
   
     return dummyData.map((bebida) => (
-      <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+      <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={bebida.id}>
         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
           {bebida.name}
         </Table.Cell>
@@ -78,7 +75,7 @@ export default function DrinkTable({data}) {
           Sabor
         </Table.HeadCell>
         <Table.HeadCell>
-          Unidades
+          Presentación
         </Table.HeadCell>
       </Table.Head>
 

@@ -10,7 +10,6 @@ export default function SidebarLogo() {
   return (
     <Sidebar aria-label="Sidebar with logo branding example">
       <div
-        href="#"
         className='flex flex-row items-center  '
       >
         <SiPhpmyadmin className='h-16 w-16 text-slate-800' />

@@ -4,25 +4,18 @@ import { Button, Label, TextInput, Card } from "flowbite-react";
 import { useState } from "react";
 
 function InForm({ products, warehouses }) {
-  const [product, setProduct] = useState("");
-  const [warehouse, setWarehouse] = useState("");
+  const [warehouse, setWarehouse] = useState();
 
-  const fetchProducts = async () => {
-    const res = await fetch("http://127.0.0.1:8000/api/bebidas");
-    const data = await res.json();
-    console.log(data);
-    setProducts(data);
-  };
 
-  const productOptions = products.bebidas.map((bebida) => (
-    <option value={bebida.id}>{bebida.name}</option>
+  const productOptions = products.map((bebida) => (
+    <option key={bebida.id} value={bebida.id}>{bebida.nombre}</option>
   ));
 
   const warehouseOptions = warehouses.map((warehouse) => (
-    <option value={warehouse.id}>{warehouse.name}</option>
+    <option key={warehouse.id} value={warehouse.id}>{warehouse.nombre}</option>
   ));
 
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(0);
   const handleSelect = (e) => {
     setSelectedProduct(e.target.value);
   };
@@ -32,9 +25,34 @@ function InForm({ products, warehouses }) {
     setQuantity(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleWarehouse = (e) => {
+    setWarehouse(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(product);
+    console.log("Selected", selectedProduct);
+    console.log("Quantity", quantity);
+    console.log("Warehouse", warehouse);
+    const response =await fetch("http://127.0.0.1:8000/api/inventarios",{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "cantidad": quantity,
+        "bebida_id": selectedProduct,
+        "bodega_id": warehouse
+    })
+    })
+
+    console.log(response);
+
+    if(response.status === 201){
+      alert("Inventario creado correctamente")
+    }else{
+      alert("Ocurrio un error")
+    }
   };
 
   return (
@@ -46,7 +64,7 @@ function InForm({ products, warehouses }) {
           </h5>
         </div>
       </div>
-      <form className="flex flex-col gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <div>
           <div className="mb-2 block">
             <Label htmlFor="base" value="Producto" />
@@ -73,7 +91,7 @@ function InForm({ products, warehouses }) {
             <Label htmlFor="base" value="Almacen" />
           </div>
           <select
-            onChange={handleSelect}
+            onChange={handleWarehouse}
             id="products"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
@@ -99,9 +117,24 @@ function CreateWarehouse() {
     setAddress(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(name);
+    const response = await fetch("http://127.0.0.1:8000/api/bodega",{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        nombre: name,
+        ubicacion: address
+      })
+    })
+    // console.log("response", response);
+    if(response.status === 201){
+      alert("Bodega creada exitosamente");
+    }else{
+      alert("Hubo un error al crear la bodega");
+    }
   };
 
   return (
@@ -113,7 +146,7 @@ function CreateWarehouse() {
           </h5>
         </div>
       </div>
-      <form className="flex flex-col gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <div>
           <div className="mb-2 block">
             <Label htmlFor="base" value="Nombre" />
@@ -126,12 +159,12 @@ function CreateWarehouse() {
             value={name}
           />
           <div className="mb-2 block">
-            <Label htmlFor="base" value="Sabor" />
+            <Label htmlFor="base" value="Direccion" />
           </div>
           <TextInput
             id="base"
             type="text"
-            placeholder="Sabor"
+            placeholder="Direccion"
             onChange={handleAddress}
             value={address}
           />
@@ -162,10 +195,10 @@ function DeleteWarehouse({ warehouses }) {
     },
   ]
 
-  const [warehouse, setWarehouse] = useState(dummyWarehouse[0].id);
+  const [warehouse, setWarehouse] = useState(0);
 
   const warehouseOptions = warehouses.map((warehouse) => (
-    <option value={warehouse.id}>{warehouse.name}</option>
+    <option key={warehouse.id} value={warehouse.id}>{warehouse.nombre}</option>
   ));
 
   const handleSelect = (e) => {
@@ -173,8 +206,21 @@ function DeleteWarehouse({ warehouses }) {
   };
   
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
+    // TODO: agregar el delete de la bodega
     e.preventDefault();
+    const response = await fetch(`http://127.0.0.1:8000/api/bodega/${warehouse}`,{
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    // console.log("response", response);
+    if(response.status === 204){
+      alert("Bodega eliminada exitosamente");
+    }else{
+      alert("Hubo un error al eliminar la bodega");
+    }
     console.log(name);
   };
 
@@ -189,7 +235,7 @@ function DeleteWarehouse({ warehouses }) {
           </h5>
         </div>
       </div>
-      <form className="flex flex-col gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <div>
           <div className="mb-2 block">
             <Label htmlFor="base" value="Bodega" />
@@ -229,7 +275,7 @@ function EditWarehouse({ warehouses }) {
   const [address, setAddress] = useState("");
 
   const warehouseOptions = warehouses.map((warehouse) => (
-    <option value={warehouse.id}>{warehouse.name}</option>
+    <option key={warehouse.id} value={warehouse.id}>{warehouse.nombre}</option>
   ));
 
   const handleSelect = (e) => {
@@ -244,9 +290,24 @@ function EditWarehouse({ warehouses }) {
     setAddress(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(name);
+    const response = await fetch(`http://127.0.0.1:8000/api/bodega/${warehouse}`,{
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        nombre: name,
+        ubicacion: address,
+      })
+    })
+    // console.log("response", response);
+    if(response.status === 200){
+      alert("Bodega editada exitosamente");
+    }else{
+      alert("Hubo un error al editar la bodega");
+    }
   };
 
   return (
@@ -258,7 +319,7 @@ function EditWarehouse({ warehouses }) {
           </h5>
         </div>
       </div>
-      <form className="flex flex-col gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <div>
           <div className="mb-2 block">
             <Label htmlFor="base" value="Bodega" />
@@ -313,9 +374,28 @@ function CreateDrink() {
     setflavor(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(name);
+    const response = await fetch("http://127.0.0.1:8000/api/bebidas",{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        nombre: name,
+        sabor: flavor,
+        presentacion: size,
+      })
+    })
+    // console.log("response", response);
+    if(response.status === 201){
+      alert("Bebida creada exitosamente");
+    }else{
+      alert("Hubo un error al crear la bebida");
+    }
+    window.location.reload();
+
+
   };
 
   const handleSelect = (e) => {
@@ -331,7 +411,7 @@ function CreateDrink() {
   ];
 
   const sizeOptions = sizes.map((size) => (
-    <option value={size}>{size}</option>
+    <option key={size} value={size}>{size}</option>
   ));
 
   return (
@@ -343,7 +423,7 @@ function CreateDrink() {
           </h5>
         </div>
       </div>
-      <form className="flex flex-col gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <div>
           <div className="mb-2 block">
             <Label htmlFor="base" value="Nombre" />
@@ -384,7 +464,7 @@ function CreateDrink() {
   );
 }
 
-function DeleteDrink() {
+function DeleteDrink({drinks}) {
   const dummyDrinks = [
     {
       id: 1,
@@ -406,32 +486,30 @@ function DeleteDrink() {
     },
   ];
 
-  const [drinks, setDrinks] = useState(dummyDrinks);
+  const [drink, setdrink] = useState(dummyDrinks);
   const [selectedDrink, setSelectedDrink] = useState(0);
 
-  const fetchDrinks = async () => {
-    // const response = await fetch("http://localhost:8080/drinks");
-    // const data = await response.json();
-    // setDrinks(data);
-    // console.log(data);
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
-    console.log(selectedDrink);
-    //todo: delete drink with id selectedDrink
-  };
-
-  const toString = (drink) => {
-    return `${drink.name} - ${drink.size}`;
+    const response = await fetch("http://127.0.0.1:8000/bebidas/" + selectedDrink, {
+      method: "DELETE",
+    });
+    console.log(response);
+    if(response.status === 204){
+      alert("Bebida eliminada exitosamente");
+    }else{
+      alert("Hubo un error al eliminar la bebida");
+    }
+    window.location.reload();
   };
 
   const drinkOptions = drinks.map((drink) => (
-    <option value={drink.id}>{drink.name} - {drink.size}</option>
+    <option key={drink.id} value={drink.id}>{drink.nombre} - {drink.presentacion}</option>
   ));
 
   const handleSelect = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
+    setSelectedDrink(e.target.value);
   };
 
   return (
@@ -443,7 +521,7 @@ function DeleteDrink() {
           </h5>
         </div>
       </div>
-      <form className="flex flex-col gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <div>
           <div className="mb-2 block">
             <Label htmlFor="base" value="Bebida" />
@@ -463,7 +541,7 @@ function DeleteDrink() {
   );
 }
 
-function EditDrink() {
+function EditDrink({drinks}) {
   const dummyDrinks = [
     {
       id: 1,
@@ -482,33 +560,55 @@ function EditDrink() {
     },
   ];
 
-  const [drinks, setDrinks] = useState(dummyDrinks);
+  const [drink, setDrink] = useState(dummyDrinks);
   const [selectedDrink, setSelectedDrink] = useState(0);
   const [name, setName] = useState("");
   const [flavor, setflavor] = useState("");
+  const [size, setSize] = useState("");
 
-  const fetchDrinks = async () => {
-    // const response = await fetch("http://localhost:8080/drinks");
-    // const data = await response.json();
-    // setDrinks(data);
-    // console.log(data);
-  };
+  const sizes = [
+    "1.5L" ,
+    "1L",
+    "750ml",
+    "500ml",
+    "250ml"
+  ];
 
-  const handleSubmit = (e) => {
+  const sizeOptions = sizes.map((size) => (
+    <option key={size} value={size}>{size}</option>
+  ));
+
+  const handleSubmit =async (e) => {
     e.preventDefault();
-    console.log(selectedDrink);
-    //todo: delete drink with id selectedDrink
+    const response = await fetch(`http://127.0.0.1:8000/api/bebidas/${selectedDrink}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nombre: name,
+          sabor: flavor,
+          }),
+    });
+    console.log(response);
+    if(response.status === 200){
+      alert("Bebida editada exitosamente");
+    }else{
+      alert("Hubo un error al editar la bebida");
+    }
+    window.location.reload();
   };
 
   const drinkOptions = drinks.map((drink) => (
-    <option value={drink.id}>{drink.name}</option>
+    <option key={drink.id} value={drink.id}>{drink.nombre}</option>
   ));
 
   const handleSelect = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setSelectedDrink(e.target.value);
-    setName(drinks[e.target.value - 1].name);
-    setflavor(drinks[e.target.value - 1].flavor);
+    setName(drinks[e.target.value - 1].nombre);
+    setflavor(drinks[e.target.value - 1].sabor);
+    setSize(drinks[e.target.value - 1].presentacion);
   };
 
   const handleName = (e) => {
@@ -517,6 +617,10 @@ function EditDrink() {
 
   const handleflavor = (e) => {
     setflavor(e.target.value);
+  };
+
+  const handleSize = (e) => {
+    setSize(e.target.value);
   };
 
   return (
@@ -528,7 +632,7 @@ function EditDrink() {
           </h5>
         </div>
       </div>
-      <form className="flex flex-col gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <div>
           <div className="mb-2 block">
             <Label htmlFor="base" value="Bebida" />
@@ -561,8 +665,20 @@ function EditDrink() {
             onChange={handleflavor}
             value={flavor}
           />
+          <div>
+            <Label htmlFor="base" value="Presentacion" />
+          </div>
+          <select
+            id="products"
+            onChange={handleSize}
+            value={size}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option selected>Escoje una presentacion</option>
+            {sizeOptions}
+          </select>
         </div>
-        <Button type="submit">Eliminar</Button>
+        <Button type="submit">Editar</Button>
       </form>
     </Card>
   );
