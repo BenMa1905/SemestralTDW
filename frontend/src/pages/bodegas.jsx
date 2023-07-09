@@ -4,7 +4,7 @@ import SidebarLogo from "@/components/Sidebar";
 import { HiChartPie } from "react-icons/hi";
 import { WarehouseCard } from "@/components/Card";
 import { Timeline, Card, Label, TextInput } from "flowbite-react";
-import InventoryTable from "@/components/InventoryTable";
+import {InventoryTable} from "@/components/InventoryTable";
 import { InForm, CreateWarehouse, DeleteWarehouse,EditWarehouse } from "@/components/Forms";
 import { useState } from "react";
 import { useEffect } from "react";

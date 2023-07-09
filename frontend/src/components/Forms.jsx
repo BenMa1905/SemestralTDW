@@ -8,7 +8,7 @@ function InForm({ products, warehouses }) {
   const [warehouse, setWarehouse] = useState("");
 
   const fetchProducts = async () => {
-    const res = await fetch("http://localhost:3000/api/products");
+    const res = await fetch("http://127.0.0.1:8000/api/bebidas");
     const data = await res.json();
     console.log(data);
     setProducts(data);

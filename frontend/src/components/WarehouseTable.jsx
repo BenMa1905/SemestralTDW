@@ -5,7 +5,7 @@ import { useState } from "react";
 import InventoryModal from "../modals/InventoryModal";
 
   // const props = ;
-function WarehouseTable() {
+function WarehouseTable({ data}) {
   
   const dummyData = [
     {
@@ -29,10 +29,18 @@ function WarehouseTable() {
   ];
 
   const Bodegas = () => {
-    // todo: replace with real data
-    // const response =  fetch('http://localhost:3000/api/warehouse');
-    // const data =  response.json();
-    // console.log(data);
+    
+    if(data && data.length > 0 && data != undefined && data != null){
+      return data.map((bodega) => (
+        <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+          <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+            {bodega.nombre}
+          </Table.Cell>
+          <Table.Cell>{bodega.ubicacion}</Table.Cell>
+          {/* <Table.Cell>{bodega.totalProducts}</Table.Cell> */}
+        </Table.Row>
+      ));
+    }
 
     
 
@@ -42,7 +50,7 @@ function WarehouseTable() {
           {bodega.name}
         </Table.Cell>
         <Table.Cell>{bodega.location}</Table.Cell>
-        <Table.Cell>{bodega.totalProducts}</Table.Cell>
+        {/* <Table.Cell>{bodega.totalProducts}</Table.Cell> */}
       </Table.Row>
       
     ));
@@ -55,7 +63,7 @@ function WarehouseTable() {
         <Table.HeadCell>Bodega</Table.HeadCell>
         <Table.HeadCell>Ubicacion</Table.HeadCell>
 
-        <Table.HeadCell>Unidades</Table.HeadCell>
+        {/* <Table.HeadCell>Unidades</Table.HeadCell> */}
       </Table.Head>
 
       <Table.Body className="divide-y">{Bodegas()}</Table.Body>

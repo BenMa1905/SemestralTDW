@@ -67,7 +67,8 @@ function TitleCard({ title, description, children }) {
   );
 }
 
-function TablesCard() {
+function TablesCard({bebidas ,almacenes}) {
+  
   return (
     <Card className=" w-3/4 ">
       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -78,14 +79,14 @@ function TablesCard() {
       </div>
 
       <div className="flex flex-col 2xl:flex-row gap-4 justify-evenly overflow-scroll">
-        <DrinkTable />
-        <WarehouseTable />
+        <DrinkTable data={bebidas}/>
+        <WarehouseTable data={almacenes}/>
       </div>
     </Card>
   );
 }
 
-function DrinkCard(){
+function DrinkCard({bebidas}){
     return(
         <Card className="w-full h-3/4" href="#">
         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -95,7 +96,7 @@ function DrinkCard(){
 
             <div>Aqui se muestran las bebidas</div>
         </div>
-        <DrinkTable />
+        <DrinkTable data={bebidas}/>
         </Card>
     )
 }

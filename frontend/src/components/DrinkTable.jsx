@@ -2,7 +2,7 @@
 
 import { Table } from 'flowbite-react';
 
-export default function DrinkTable() {
+export default function DrinkTable({data}) {
 
   const dummyData = [
     {
@@ -26,12 +26,31 @@ export default function DrinkTable() {
   ]
 
   const Bebidas =  () => {
-    // todo: replace with real data
-    // const response =  fetch('http://localhost:3000/api/warehouse');
-    // const data =  response.json();
-    // console.log(data);
 
 
+
+    if(data){
+    
+      console.log("Datos en drinkTable", data)
+
+
+      return data.map((bebida) => (
+        <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+          <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+            {bebida.nombre}
+          </Table.Cell>
+          <Table.Cell>
+            {bebida.sabor}
+          </Table.Cell>
+          <Table.Cell>
+            {bebida.presentacion}
+          </Table.Cell>
+          <Table.Cell>
+            {bebida.totalProducts}
+          </Table.Cell>
+        </Table.Row>
+      ));
+    }
   
     return dummyData.map((bebida) => (
       <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
