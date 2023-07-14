@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->increments('id');
             $table->string('nombre');
             $table->string('ubicacion');
+            $table->boolean('eliminado')->default(false);
             $table->timestamps();
         });
     }

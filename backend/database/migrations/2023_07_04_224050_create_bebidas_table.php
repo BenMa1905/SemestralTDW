@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('sabor');
             $table->string('presentacion');
             $table->string('nombre');
+            $table->boolean('eliminado')->default(false);
             $table->timestamps();
         });
     }

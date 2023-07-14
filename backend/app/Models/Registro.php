@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Registro extends Model
 {
+
+    use HasFactory;
 
     protected $table = 'registro';
     protected $fillable = ['bodega_envia_id', 'bodega_recibe_id', 'cantidad', 'bebida_id'];

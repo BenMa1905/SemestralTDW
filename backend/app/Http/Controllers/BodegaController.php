@@ -9,7 +9,7 @@ class BodegaController extends Controller
 {
     public function index()
     {
-        $bodega = Bodega::all();
+        $bodega = Bodega::where('eliminado', false)->get();
         return response()->json($bodega, 200);
     }
 
@@ -19,6 +19,12 @@ class BodegaController extends Controller
             'nombre' => 'required|string|max:255',
             'ubicacion' => 'required|string|max:255',
         ]);
+
+        if (Bodega::where('nombre', $request->nombre)->exists()) {
+            return response()->json([
+                'message' => 'Ya existe una bodega con ese nombre'
+            ], 400);
+        }
 
         $bodega = Bodega::create($request->all());
 
@@ -46,6 +52,12 @@ class BodegaController extends Controller
             $bodega->ubicacion = $request->ubicacion;
         }
 
+        if (Bodega::where('nombre', $request->nombre)->exists()) {
+            return response()->json([
+                'message' => 'Ya existe una bodega con ese nombre'
+            ], 400);
+        }
+
         $bodega->save();
 
         return response()->json($bodega, 200);
@@ -54,7 +66,9 @@ class BodegaController extends Controller
     public function destroy($id)
     {
         $bodega = Bodega::findOrFail($id);
-        $bodega->delete();
+        $bodega->eliminado = true;
+        $bodega->nombre = $bodega->nombre . '(ELIMINADO)';
+        $bodega->save();
 
         return response()->json([
             'message' => 'Bodega eliminada correctamente'

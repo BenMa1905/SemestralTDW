@@ -2,21 +2,21 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Bebida;
+use App\Models\Bodega;
+use App\Models\Inventario;
+use App\Models\Registro;
+
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+    public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Llama a los seeders/factories correspondientes
+        Bebida::factory(10)->create();
+        Bodega::factory(10)->create();
+        Inventario::factory(10)->create();
+        Registro::factory(10)->create();
     }
 }

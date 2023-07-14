@@ -15,16 +15,6 @@ class BebidaController extends Controller
             'presentacion' => 'required|string|max:255',
         ]);
 
-        $bebidaExistente = Bebida::where('nombre', $request->nombre)
-            ->where('sabor', $request->sabor)
-            ->where('presentacion', $request->presentacion)
-            ->first();
-
-        if ($bebidaExistente) {
-            return response()->json(['message' => 'Ya existe una bebida con las mismas cualidades'], 409);
-        }
-
-        // Crear la nueva bebida
         $bebida = new Bebida();
         $bebida->nombre = $request->nombre;
         $bebida->sabor = $request->sabor;
@@ -63,7 +53,9 @@ class BebidaController extends Controller
     public function destroy($id)
     {
         $bebida = Bebida::findOrFail($id);
-        $bebida->delete();
+        $bebida->eliminado = true;
+        $bebida->nombre = $bebida->nombre . ' (ELIMINADO)';
+        $bebida->save();
         return response()->json([
             'message' => 'Bebida eliminada correctamente'
         ], 204);
@@ -77,7 +69,7 @@ class BebidaController extends Controller
 
     public function findAll()
     {
-        $bebidas = Bebida::all();
+        $bebidas = Bebida::where('eliminado', false)->get();
         return response()->json($bebidas, 200);
     }
 }

@@ -21,16 +21,22 @@ class InventarioController extends Controller
             'bodega_id' => 'required|exists:bodega,id',
         ]);
 
-        if (Inventario::where('bebida_id', $request->bebida_id)->where('bodega_id', $request->bodega_id)->exists()) {
-            return response()->json([
-                'message' => 'Ya existe un inventario para la bebida en la bodega'
-            ], 400);
+        $inventario = Inventario::where('bebida_id', $request->bebida_id)
+            ->where('bodega_id', $request->bodega_id)
+            ->first();
+
+        if ($inventario) {
+            $inventario->cantidad += $request->cantidad;
+            $inventario->save();
+
+            return response()->json($inventario, 200);
         }
 
         $inventario = Inventario::create($request->all());
 
         return response()->json($inventario, 201);
     }
+
 
     public function show($id)
     {
