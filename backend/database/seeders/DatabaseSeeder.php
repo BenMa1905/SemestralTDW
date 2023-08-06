@@ -14,9 +14,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Llama a los seeders/factories correspondientes
-        Bebida::factory(10)->create();
-        Bodega::factory(10)->create();
-        Inventario::factory(10)->create();
-        Registro::factory(10)->create();
+        Bebida::factory(3)->create();
+        Bodega::factory(2)->create();
+        Inventario::factory(2)->create();
+        Registro::factory(1)->create();
     }
 }
