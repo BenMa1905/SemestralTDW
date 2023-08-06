@@ -227,7 +227,7 @@ export default function Home() {
 
         {/* div del content */}
         <div className="bg-slate-800 flex-row w-full flex-grow justify-evenly  m-2 p-2  gap-2 flex ">
-          <div className="flex   h-full  w-1/3 gap-2 overflow-scroll justify-evenly items-center">
+          <div className="flex   h-full  w-1/3 gap-2 justify-evenly items-center">
             <div className="flex w-full h-full flex-col justify-center items-center">
               <Card className="w-full  flex " href="#">
                 <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
