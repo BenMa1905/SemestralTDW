@@ -135,7 +135,7 @@ export default function Home() {
 
         {/* div del content */}
         <div className="bg-slate-800 w-full justify-evenly   m-2 p-2  gap-2 flex flex-col">
-          <div className="flex h-1/2 gap-2 overflow-scroll justify-evenly items-center">
+          <div className="flex h-1/2 gap-2 justify-evenly items-center">
             <WarehouseCard warehouses={warehouses} />
             <div className=" flex  w-1/2 gap-2 ">
               <CreateWarehouse />
